@@ -12,7 +12,7 @@ export const sendVerificationEmail = async(
 ) => {
   const confirmLink = `${domain}/email-verification?token=${token}`;
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "noreply@gaxil.eu",
     to: email,
     subject: "Prosím potvrďte svůj email",
     react: EmailVerificationTemplate({verificationLink: confirmLink})
