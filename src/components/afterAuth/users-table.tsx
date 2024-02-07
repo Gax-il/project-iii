@@ -31,33 +31,8 @@ export const UsersTable = () => {
     setLoading(false)
   }, [page])
 
-  var key = 0;
   return (
     <div>
-      {/* {loading && <SyncLoader />}
-      {count.current}
-      <div className="grid grid-cols-[auto_auto_auto_auto_auto] font-mono text-sm">
-        <p className="font-bold">
-          Email
-        </p>
-        <p className="font-bold">
-          EV
-        </p>
-        <p className="font-bold">
-          Jméno
-        </p>
-        <p className="font-bold">
-          Role
-        </p>
-        <p className="font-bold">
-          OAuth
-        </p>
-      {users?.map((user) => {
-        return (
-          <UserLine user={user} />
-        )
-      })}
-      </div> */}
       <Table>
         <TableCaption>
           <Pagination>
@@ -110,8 +85,8 @@ export const UsersTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody className="items-center">
-          {users?.map((user) => (
-            <UserLine user={user} />
+          {users?.map((user, index) => (
+            <UserLine user={user} key={index} uniqueKey = {index*1000} />
           ))}
         </TableBody>
       </Table>

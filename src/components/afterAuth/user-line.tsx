@@ -8,11 +8,13 @@ import { useEffect, useState } from "react";
 import { Table, TableCell, TableRow } from "../ui/table";
 
 interface UserLineProps {
-  user: User;
+  user: User,
+  uniqueKey: number;
 }
 
 export const UserLine = ({
-  user
+  user,
+  uniqueKey
 }: UserLineProps) => {
   const [roleName, setRoleName] = useState<string | undefined>();
   useEffect(() => {
@@ -21,12 +23,9 @@ export const UserLine = ({
       setRoleName(name);
     }
     fetchData(user.roleId as string);
-  }, [])
-
-  console.log(user.id)
-  
+  })
   return (
-    <TableRow key={user.id}>
+    <TableRow key={uniqueKey}>
       <TableCell>
         <span className="flex gap-y-2">
         {user.email}
