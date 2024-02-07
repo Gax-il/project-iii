@@ -1,0 +1,1 @@
+export const URL_WITHOUT_ANY_ROUTE = ""
