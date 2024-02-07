@@ -1,8 +1,6 @@
 import NextAuth, { type Session } from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient, Role } from "@prisma/client"
-import { JWT } from "next-auth/jwt";
-
 import authConfig from "./auth.config"
 import { db } from "@/lib/db";
 import { getUserById } from "@/data/user";
@@ -16,6 +14,7 @@ export const {
   auth,
   signIn,
   signOut,
+  update,
 } = NextAuth({
   adapter: PrismaAdapter(prisma),
   pages: {
@@ -42,7 +41,7 @@ export const {
 
       return true;
     },
-    async session({ token, session }: { session: Session; token?: JWT}) {
+    async session({ token, session }) {
       // console.log({ sessiontoken: token })
       if (session.user && token?.sub) {
         session.user.id = token.sub;
