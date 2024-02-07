@@ -18,18 +18,17 @@ model Role {
 }
 
 model User {
-  id                 String    @id @default(cuid())
-  name               String?
-  email              String?   @unique
-  emailVerified      DateTime?
-  image              String?
-  password           String?
-  accounts           Account[]
-  isTwoFactorEnabled Boolean   @default(false)
-  roleId             String?   @default("clsas7nqw0003g33t2f5g226g")
-  role               Role?     @relation(fields: [roleId], references: [id])
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  accounts      Account[]
+  roleId        String?
+  role          Role?     @relation(fields: [roleId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@index([roleId], name: "roleId")
 }

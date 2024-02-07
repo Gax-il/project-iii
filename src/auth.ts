@@ -1,12 +1,15 @@
-import NextAuth,{type Session} from "next-auth"
-import authConfig from "./auth.config"
+import NextAuth, { type Session } from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { db } from "@/lib/db";
+import { PrismaClient, Role } from "@prisma/client"
 import { JWT } from "next-auth/jwt";
+
+import authConfig from "./auth.config"
+import { db } from "@/lib/db";
 import { getUserById } from "@/data/user";
 import { getAccountByUserId } from "@/data/account";
 import { getRoleById } from "@/data/role";
-import { Role } from "@prisma/client"
+
+const prisma = new PrismaClient()
 
 export const {
   handlers: { GET, POST },
@@ -14,35 +17,34 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  adapter: PrismaAdapter(prisma),
   pages: {
-    signIn: "/auth/login",
-    error: "/auth/error",
+    signIn: "/login"
   },
   events: {
     async linkAccount({ user }) {
       await db.user.update({
         where: { id: user.id },
-        data: { emailVerified: new Date() },
+        data: {
+          emailVerified: new Date(),
+          roleId: process.env.DEFAULT_ROLE_ID
+        },
       });
     }
   },
   callbacks: {
     async signIn({ user, account }) {
-      //AllowOAUTH without email
-      console.log(user, account)
       if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id as string);
 
       if (!existingUser?.emailVerified) return false;
-      
-      //TODO: 2FA
 
       return true;
     },
     async session({ token, session }: { session: Session; token?: JWT}) {
       // console.log({ sessiontoken: token })
-      if (session.user && token?.sub) {// nikde tu ? nema ale nechci errory xd
+      if (session.user && token?.sub) {
         session.user.id = token.sub;
       }
 
@@ -72,13 +74,10 @@ export const {
       token.email = existingUser.email;
       
       token.role = await getRoleById(existingUser.roleId as string)
-      
-      console.log(token.role)
 
       return token;
     },
   },
-  adapter: PrismaAdapter(db),
   session: {strategy: 'jwt'},
   ...authConfig,
 })

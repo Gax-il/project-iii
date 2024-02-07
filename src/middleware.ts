@@ -16,7 +16,7 @@ import { getSession } from "next-auth/react";
 
 const { auth } = NextAuth(authConfig);
 
-export default auth(async(req) => {
+export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth
   
@@ -24,7 +24,6 @@ export default auth(async(req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
   const isVerRoute = verRoutes.includes(nextUrl.pathname)
-  const isAdminRoute = nextUrl.pathname.startsWith(adminRoute)
 
   if (isApiAuthRoute) {
     return null;

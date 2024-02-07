@@ -5,8 +5,6 @@ export const getRoleById = async (id: string) => {
     const role = await db.role.findUnique({
       where: { id }
     })
-
-    console.log(role)
     return role;
   } catch {
     return null;

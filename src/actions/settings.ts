@@ -110,9 +110,6 @@ export const passwordChange = async(
     dbPassword
   );
 
-
-  console.log(password, dbPassword)
-
   if (!passwordIsMatch) {
     return {error: "Špatné heslo"}
   }
