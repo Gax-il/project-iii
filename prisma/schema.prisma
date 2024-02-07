@@ -34,10 +34,6 @@ model User {
   @@index([roleId], name: "roleId")
 }
 
-model DefaultRole {
-  id String @id
-}
-
 model Account {
   id                String  @id @default(cuid())
   userId            String

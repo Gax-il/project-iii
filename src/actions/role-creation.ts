@@ -30,7 +30,5 @@ export const createRole = async (values: z.infer<typeof RoleCreateSchema>) => {
     }
   })
 
-  console.log(name,permissions)
-
   return {success: ROLE_CREATED}
 }
