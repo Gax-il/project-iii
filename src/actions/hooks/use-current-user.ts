@@ -1,5 +1,4 @@
 import { ExtendedUser } from "@/next-auth";
-import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
