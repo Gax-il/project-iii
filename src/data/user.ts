@@ -33,7 +33,7 @@ export const getUsersCount = async () => {
 }
 
 export const getNthUsers = async (take: number, page: number) => {
-  const users = await prisma?.user.findMany({
+  const users = await db.user.findMany({
     take: take,
     skip: (page - 1) * take,
   })

@@ -1,11 +1,10 @@
 "use client"
 
-import { getRoleName } from "@/actions/roles";
-import { getRoleById } from "@/data/role";
+import { getRoleNameById } from "@/actions/roles";
 import { User } from "@prisma/client";
-import { IconCheck, IconLoader, IconX } from "@tabler/icons-react";
+import { IconCheck, IconQuestionMark, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { Table, TableCell, TableRow } from "../ui/table";
+import { TableCell, TableRow } from "../ui/table";
 
 interface UserLineProps {
   user: User,
@@ -19,7 +18,7 @@ export const UserLine = ({
   const [roleName, setRoleName] = useState<string | undefined>();
   useEffect(() => {
     const fetchData = async (roleId: string) => {
-      const name = await getRoleName(roleId)
+      const name = await getRoleNameById(roleId)
       setRoleName(name);
     }
     fetchData(user.roleId as string);
@@ -27,17 +26,17 @@ export const UserLine = ({
   return (
     <TableRow key={uniqueKey}>
       <TableCell>
-        <span className="flex gap-y-2">
         {user.email}
-        {user.emailVerified ? <IconCheck/> : <IconX />}
-        </span>
+        </TableCell>
+      <TableCell>
+        {user.emailVerified ? <IconCheck className="text-green-500"/> : <IconX className="text-red-600" />}
       </TableCell>
       <TableCell>
         {user.name}
       </TableCell>
       <TableCell>
         {roleName && <p>{roleName}</p>}
-        {!roleName && <IconLoader />}
+        {!roleName && <IconQuestionMark />}
       </TableCell>
       <TableCell>
       {!user.password ? <IconCheck className="text-green-500"/> : <IconX className="text-red-600" />}

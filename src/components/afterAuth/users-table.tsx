@@ -1,39 +1,44 @@
 "use client"
 
 import { countUsers, getNUsers } from "@/actions/users"
-import { getUsersCount } from "@/data/user"
 import { User } from "@prisma/client"
-import { useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { SyncLoader } from "react-spinners"
 import { UserLine } from "./user-line"
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination"
+import { UserLineSkeleton } from "../skeletons/user-line"
 
 
 
 export const UsersTable = () => {
-  const searchParams = useSearchParams()
   const [users, setUsers] = useState<User[] | undefined>()
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(true)
-  const count = useRef<number>(1);
+  const count = useRef<number>(10);
+  const lines = 10
   useEffect(() => {
-
-    setLoading(true)
     const fetchData = async () => {
-      const countResult = await countUsers()
-      count.current = countResult;
-      const curUsers = await getNUsers(5, page);
-      setUsers(curUsers);
+      setLoading(true)
+      try {
+        const countResult = await countUsers()
+        count.current = countResult;
+        const curUsers = await getNUsers(lines, page);
+        setUsers(curUsers);
+      } catch {
+        console.error("WIP")
+      } finally {
+        setLoading(false);
+      }
     }
     fetchData();
-    setLoading(false)
-  }, [page])
-
+    }, [page])
+    
+  const skeletonCount = count.current > page * lines ? lines : count.current % lines;
   return (
-    <div>
-      <Table>
+    <div className="inline-block">
+      <Table className="w-[970px] table-fixed" >
+        {!loading &&
         <TableCaption>
           <Pagination>
             <PaginationContent>
@@ -52,7 +57,7 @@ export const UsersTable = () => {
                   {page}
                 </PaginationLink>
               </PaginationItem>
-              {page * 5 < count.current &&
+              {page * lines < count.current &&
                 <>
                   <PaginationItem>
                     <PaginationLink onClick={() => { setPage(page + 1) }}>
@@ -61,12 +66,12 @@ export const UsersTable = () => {
                 </PaginationItem>
                 </>
               }
-              {(page + 1) * 5 < count.current &&
+              {(page + 1) * lines < count.current &&
                 <PaginationItem>
                   <PaginationEllipsis />
                 </PaginationItem>
               }
-              {page * 5 < count.current &&
+              {page * lines < count.current &&
                 <>
                   <PaginationItem>
                     <PaginationNext onClick={() => { setPage(page + 1) }} />
@@ -76,18 +81,29 @@ export const UsersTable = () => {
             </PaginationContent>
           </Pagination>
         </TableCaption>
+          }
         <TableHeader>
           <TableRow key="1">
-            <TableHead>Email + verifikace</TableHead>
-            <TableHead>Jméno</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>OAuth</TableHead>
+            <TableHead className="w-[50px]">Email</TableHead>
+            <TableHead className="w-[55px]">Ověřený</TableHead>
+            <TableHead className="w-[50px]">Jméno</TableHead>
+            <TableHead className="w-[50px]">Role</TableHead>
+            <TableHead className="w-[50px]">OAuth</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="items-center">
-          {users?.map((user, index) => (
-            <UserLine user={user} key={index} uniqueKey = {index*1000} />
+        <TableBody className="items-center truncate">
+          {loading && 
+          <>
+          {[...Array(skeletonCount)].map((_, index) => (
+            <UserLineSkeleton key={index} uniqueKey={index} />
           ))}
+          </>
+          }
+          <UserLineSkeleton uniqueKey={10}/>
+          {!loading && 
+            users?.map((user, index) => (
+              <UserLine user={user} key={index} uniqueKey={index * 1000} />
+            ))}
         </TableBody>
       </Table>
     </div>

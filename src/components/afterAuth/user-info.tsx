@@ -1,4 +1,4 @@
-import { ExtendedUser } from "@/secTypes";
+import { ExtendedUser } from "@/next-auth";
 import { IconCheck, IconX } from "@tabler/icons-react";
 
 interface UserInfoProps {
