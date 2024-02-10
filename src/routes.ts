@@ -31,11 +31,11 @@ export const authRoutes = [
  * 
  * Cesty pro verifikaci uživatelů
  * 
- * @type {string[]}
+ * @type {string}
  */
-export const verRoutes = [
-  "/email-verification",
-]
+export const emailVerPrefix = "/email-verification"
+
+export const resetPasswordPrefix = "/reset-password"
 
 /**
  * Auth api routes prefix.

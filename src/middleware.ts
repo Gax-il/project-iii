@@ -9,8 +9,8 @@ import {
   authRoutes,
   apiAuthPrefix,
   DEFAULT_AUTH_REDIRECT,
-  verRoutes,
-  adminRoute
+  emailVerPrefix,
+  resetPasswordPrefix,
 } from "@/routes"
 import { getSession } from "next-auth/react";
 
@@ -23,13 +23,18 @@ export default auth((req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
-  const isVerRoute = verRoutes.includes(nextUrl.pathname)
+  const isVerRoute = nextUrl.pathname.startsWith(emailVerPrefix)
+  const isResetPasswordRoute = nextUrl.pathname.startsWith(resetPasswordPrefix)
 
   if (isApiAuthRoute) {
     return null;
   }
 
   if (isVerRoute) {
+    return null;
+  }
+
+  if (isResetPasswordRoute) {
     return null;
   }
 
