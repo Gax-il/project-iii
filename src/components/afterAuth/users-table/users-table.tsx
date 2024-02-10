@@ -1,5 +1,5 @@
-import { UserData, columns } from "@/components/afterAuth/users-table/colums"
-import { DataTable } from "./data-table"
+import { UserData, columns } from "@/components/afterAuth/users-table/columns"
+import { DataTable } from "@/components/afterAuth/users-table/data-table"
 import { db } from "@/lib/db"
 import { getUserData } from "@/actions/users";
 
@@ -12,7 +12,6 @@ async function getData(): Promise<UserData[]> {
       userDataArray.push(userData);
     }
   }
-  console.log(userDataArray)
   return userDataArray;
 }
 

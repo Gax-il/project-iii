@@ -44,6 +44,15 @@ export const EMAIL_IN_USE_OAUTH = "Email použit u jiného providera (Google/Git
 export const INVALID_NAME = "Neplatné jméno"
 
 /**
+ * Error message for filling with " " on start or end
+ * 
+ * Chybová hláška pro vyplneni s mezerou pred nebo za
+ * 
+ * @type {string}
+ */
+export const SPACE_BEFORE_OR_AFTER = "Na začátku a konci nesmí být mezera"
+
+/**
  * Error message for using email that is already taken
  * 
  * Chybová hláška pro využití emailu co je již použit
@@ -214,3 +223,5 @@ export const EMAIL_NOT_EMAIL = "Email musí být prázdný a nebo platný"
  * @type {string} 
  */
 export const RESET_EMAIL_SENT = "Na email vám byl zaslán odkaz na změnu hesla";
+
+export const CHANGED = "Změněno";

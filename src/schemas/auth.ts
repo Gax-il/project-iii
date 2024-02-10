@@ -1,4 +1,4 @@
-import { EMAIL_NOT_EMAIL, EXCEED_MAX_CHARS, INVALID_EMAIL, INVALID_NAME, INVALID_PASSWORD, PASSWORDS_NOT_MATCHING } from "@/assets/messages";
+import { EMAIL_NOT_EMAIL, EXCEED_MAX_CHARS, INVALID_EMAIL, INVALID_NAME, INVALID_PASSWORD, PASSWORDS_NOT_MATCHING, SPACE_BEFORE_OR_AFTER } from "@/assets/messages";
 import * as z from "zod";
 
 export const LoginSchema = z.object({
@@ -99,4 +99,29 @@ export const EmailSchema = z.object({
   }).max(64, {
     message: EXCEED_MAX_CHARS(64)
   }),
+})
+
+export const UserEditSchema = z.object({
+  name: z.string().max(64, {
+    message: EXCEED_MAX_CHARS(64)
+  }).refine(name => {
+    return !(/^\s|\s$/.test(name));
+  }, {
+    message: SPACE_BEFORE_OR_AFTER
+  }),
+  email: z.string().max(64, {
+    message: EXCEED_MAX_CHARS(64)
+  }),
+  emailVer: z.boolean(),
+  role: z.string()
+}).refine((data) => {
+  if (data.email == "") {
+    return true;
+  }
+  if (z.string().email().safeParse(data.email)) {
+    return true
+  }
+  return false
+}, {
+  message: EMAIL_NOT_EMAIL
 })

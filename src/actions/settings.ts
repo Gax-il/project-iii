@@ -138,8 +138,6 @@ const EmailChangedVerification = async (email: string, user: User) => {
     console.error('Error updating user:', error);
   }
 
-  console.log(await getUserById(id))
-
   const verificationToken = await generateVerificationToken(email);
   sendVerificationEmail(email, verificationToken.token)
 } 

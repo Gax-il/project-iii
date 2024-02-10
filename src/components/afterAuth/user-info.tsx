@@ -9,13 +9,6 @@ interface UserInfoProps {
 export const UserInfo = ({
   user,
 }: UserInfoProps) => {
-  if (user == null) {
-    return(
-      <div>
-        {ERROR_MSG}
-      </div>
-    )
-  }
   return (
     <>
     <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">

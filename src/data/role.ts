@@ -35,3 +35,13 @@ export const getPermissionsByRoleId = async (id: string) => {
     return null;
   }
 }
+
+export const getAllRoles = async () => {
+  try {
+    const roles = await db.role.findMany()
+    return roles;
+  }
+  catch {
+    return null;
+  }
+}

@@ -40,3 +40,12 @@ export const getNthUsers = async (take: number, page: number) => {
 
   return users;
 }
+
+export const removeUserById = async (userID: string) => {
+  const removed = await db.user.delete({
+    where: {
+      id: userID
+    }
+  })
+  console.log(removed)
+}

@@ -1,30 +1,40 @@
 "use client"
 
-import { countUsers, getNUsers } from "@/actions/users"
+import { countUsers, getNUsers, getUserData } from "@/actions/users"
 import { User } from "@prisma/client"
 import { useEffect, useRef, useState } from "react"
-import { SyncLoader } from "react-spinners"
 import { UserLine } from "./user-line"
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination"
 import { UserLineSkeleton } from "../skeletons/user-line"
+import { UserData } from "@/types"
 
 
 
 export const UsersTable = () => {
-  const [users, setUsers] = useState<User[] | undefined>()
+  const [users, setUsers] = useState<UserData[] | undefined>()
   const [page, setPage] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(true)
+  const [skeletonCount, setSkeletonCount] = useState<number>(10)
   const count = useRef<number>(10);
   const lines = 10
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
+        setSkeletonCount(10)
         const countResult = await countUsers()
         count.current = countResult;
+        setSkeletonCount(count.current > page * lines ? lines : count.current % lines)
         const curUsers = await getNUsers(lines, page);
-        setUsers(curUsers);
+        const editedUsers: UserData[] = [];
+        for (const user of curUsers) {
+          const editedUser = await getUserData(user)
+          if (editedUser) {
+            editedUsers.push(editedUser)
+          }
+        }
+        setUsers(editedUsers);
       } catch {
         console.error("WIP")
       } finally {
@@ -33,21 +43,18 @@ export const UsersTable = () => {
     }
     fetchData();
     }, [page])
-    
-  const skeletonCount = count.current > page * lines ? lines : count.current % lines;
   return (
-    <div className="inline-block">
-      <Table className="w-[970px] table-fixed" >
-        {!loading &&
+    <div className="flex">
+      <Table className="" >
         <TableCaption>
           <Pagination>
             <PaginationContent>
               {page > 1 && <>
               <PaginationItem>
-                <PaginationPrevious className="font-mono" onClick={() => { setPage(page - 1)}}/>
+                <PaginationPrevious className="font-mono" onClick={() => { if(!loading) setPage(page - 1)}}/>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink onClick={() => { setPage(page - 1) }}>
+                <PaginationLink onClick={() => {if(!loading)  setPage(page - 1) }}>
                   {page-1}
                 </PaginationLink>
                 </PaginationItem>
@@ -60,7 +67,7 @@ export const UsersTable = () => {
               {page * lines < count.current &&
                 <>
                   <PaginationItem>
-                    <PaginationLink onClick={() => { setPage(page + 1) }}>
+                    <PaginationLink onClick={() => {if(!loading)  setPage(page + 1) }}>
                       {page + 1}
                     </PaginationLink>
                 </PaginationItem>
@@ -74,21 +81,20 @@ export const UsersTable = () => {
               {page * lines < count.current &&
                 <>
                   <PaginationItem>
-                    <PaginationNext onClick={() => { setPage(page + 1) }} />
+                    <PaginationNext onClick={() => { if(!loading) setPage(page + 1) }} className="font-mono" />
                   </PaginationItem>
                 </>
               }
             </PaginationContent>
           </Pagination>
         </TableCaption>
-          }
         <TableHeader>
           <TableRow key="1">
-            <TableHead className="w-[50px]">Email</TableHead>
-            <TableHead className="w-[55px]">Ověřený</TableHead>
-            <TableHead className="w-[50px]">Jméno</TableHead>
-            <TableHead className="w-[50px]">Role</TableHead>
-            <TableHead className="w-[50px]">OAuth</TableHead>
+            <TableHead className="">Email</TableHead>
+            <TableHead className="">Ověřený</TableHead>
+            <TableHead className="">Jméno</TableHead>
+            <TableHead className="">Role</TableHead>
+            <TableHead className="">OAuth</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="items-center truncate">
@@ -99,7 +105,6 @@ export const UsersTable = () => {
           ))}
           </>
           }
-          <UserLineSkeleton uniqueKey={10}/>
           {!loading && 
             users?.map((user, index) => (
               <UserLine user={user} key={index} uniqueKey={index * 1000} />
