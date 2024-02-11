@@ -7,7 +7,6 @@ import {
 import { Button } from "../ui/button";
 import { IconTrash } from "@tabler/icons-react";
 import { UserData } from "@/types";
-import { useTransition } from "react";
 import { removeUser } from "@/actions/users";
 import { useToast } from "../ui/use-toast";
 

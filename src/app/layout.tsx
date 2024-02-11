@@ -19,8 +19,8 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`${inter.className} bg-main min-w-screen min-h-screen`}>
 				{children}
+				<Toaster />
 			</body>
-			<Toaster />
 		</html>
 	);
 }
