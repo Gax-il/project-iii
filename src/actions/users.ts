@@ -42,7 +42,13 @@ export const getUserData = async (user: User) => {
 }
 
 export const removeUser = async (userId: string) => {
-  removeUserById(userId);
+  try{
+    await removeUserById(userId);
+    return ["Uživatel smazán",userId]
+  } catch{
+    return ["Zkuste znovu", "V případě častého vyskytnutí problému kontaktujte vývojáře"]
+  }
+  
 }
 
 export const updateUser = async (user: UserData, values: z.infer<typeof UserEditSchema>) => {
@@ -77,7 +83,6 @@ export const updateUser = async (user: UserData, values: z.infer<typeof UserEdit
   if (emailVerChange) {
     if (!user.email_verified) {
       emailState = new Date()
-      console.log(emailState)
     }
     else {
       emailState = null
@@ -87,7 +92,6 @@ export const updateUser = async (user: UserData, values: z.infer<typeof UserEdit
 
   if(!somethingChanged) return {notice: "Nic se nezměnilo"}
   if ((!emailVerChange && !roleChanged) && somethingChanged) {
-    console.log(user.name,user.email)
     await db.user.update({
       where: { id },
       data: {

@@ -47,5 +47,4 @@ export const removeUserById = async (userID: string) => {
       id: userID
     }
   })
-  console.log(removed)
 }

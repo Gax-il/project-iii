@@ -13,7 +13,7 @@ export const UserEditButton = ({ user }: UserEditButtonProps) => {
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button variant="ghost" className="w-6 h-6 p-0">
-					<span className="sr-only">Open Menu</span>
+					<span className="sr-only">Upravit uživatele</span>
 					<IconDots className="h-4 w-4" />
 				</Button>
 			</DialogTrigger>
