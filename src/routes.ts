@@ -27,14 +27,19 @@ export const authRoutes = [
 ]
 
 /**
- * Routes for user verification
+ * Prefix of the route for user verification
  * 
- * Cesty pro verifikaci uživatelů
+ * Prefix cesty pro verifikaci uživatelů
  * 
  * @type {string}
  */
 export const emailVerPrefix = "/email-verification"
 
+/**
+ * Prefix of the route for password reset
+ * 
+ * Prefix route na reset hesla
+ */
 export const resetPasswordPrefix = "/reset-password"
 
 /**

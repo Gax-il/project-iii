@@ -1,4 +1,3 @@
-import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
@@ -14,7 +13,7 @@ export default function Home() {
             </h1>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <p className="">Tento web je součástí semestrálního projektu</p>
           <div className="w-full flex justify-between space-x-4">
             <Button

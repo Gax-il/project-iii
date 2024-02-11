@@ -44,7 +44,7 @@ import { LOGINFORM } from "@/assets/texts";
 import { EMAIL, PASSWORD } from "@/assets/placeholders";
 import { FormStateMessage } from "../form-state-message";
 import { EMAIL_IN_USE_OAUTH } from "@/assets/messages";
-import { login } from "@/actions/login";
+import { login } from "@/actions/auth/login";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();

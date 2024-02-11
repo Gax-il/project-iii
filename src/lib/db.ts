@@ -1,14 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
-declare global {
-  var prisma: PrismaClient | undefined;
-}
+let prisma: PrismaClient | undefined;
 
-const initializePrismaClient = () => {
-  if (typeof global.prisma === 'undefined') {
-    global.prisma = new PrismaClient();
+const initializePrismaClient = (): PrismaClient => {
+  if (!prisma) {
+    prisma = new PrismaClient();
   }
-  return global.prisma;
+  return prisma;
 };
 
 export const db = initializePrismaClient();

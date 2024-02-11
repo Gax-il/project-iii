@@ -53,7 +53,7 @@ export const NameEmailChangeSchema = z.object({
     message: EXCEED_MAX_CHARS(64)
   })
 }).refine((data) => {
-  if (data.email == "") {
+  if (data.email === "") {
     return true;
   }
   if (z.string().email().safeParse(data.email)) {
@@ -115,7 +115,7 @@ export const UserEditSchema = z.object({
   emailVer: z.boolean(),
   role: z.string()
 }).refine((data) => {
-  if (data.email == "") {
+  if (data.email === "") {
     return true;
   }
   if (z.string().email().safeParse(data.email)) {

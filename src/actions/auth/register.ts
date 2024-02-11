@@ -26,7 +26,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return {error: EMAIL_IN_USE_OAUTH}
   }
 
-  if (!!existingUser) {
+  if (existingUser != null) {
     return {error: EMAIL_TAKEN};
   }
 

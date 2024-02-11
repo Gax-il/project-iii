@@ -1,10 +1,7 @@
 import { BackButton } from "@/components/auth/back-button";
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { IconBrandNextjs, IconBrandPrisma, IconBrandRadixUi, IconBrandReact, IconBrandTabler, IconBrandTailwind, IconBrandTypescript, IconFileTypeTs, IconMail, IconPassword, IconShieldLock, IconUvIndex } from "@tabler/icons-react";
-import Link from "next/link";
+import { IconBrandNextjs, IconBrandPrisma, IconBrandRadixUi, IconBrandReact, IconBrandTabler, IconBrandTailwind, IconBrandTypescript, IconFileTypeTs, IconMail, IconPassword, IconShieldLock, IconTool, IconUvIndex } from "@tabler/icons-react";
 
 export default function InfoPage() {
   return (
@@ -33,6 +30,10 @@ export default function InfoPage() {
             <span className="flex gap-1">
               <IconBrandReact />
               React
+            </span>
+            <span className="flex gap-1">
+              <IconTool />
+              Bun
             </span>
             <span className="flex gap-1">
               <IconBrandTailwind />

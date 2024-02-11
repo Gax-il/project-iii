@@ -24,12 +24,12 @@ export const getUserData = async (user: User) => {
   if (!user || !user.roleId || !user.email || !user.name) {
     return null;
   }
-  const roleName = await getRoleNameById(user.roleId);
+  const roleName = user.roleId ? await getRoleNameById(user.roleId) : null;
   if (!roleName) {
     return null;
   }
   const OAuth = !user.password ? true : false;
-  const emailVerified = !!user.emailVerified ? true : false
+  const emailVerified = user.emailVerified ? true : false;
   const userData: UserData = {
     name: user.name,
     id: user.id,
@@ -49,7 +49,7 @@ export const updateUser = async (user: UserData, values: z.infer<typeof UserEdit
 
   const id = user.id;
 
-  var emailVerChange;
+  let emailVerChange: boolean|undefined;
   if (!user.OAuth) {
     emailVerChange = user.email_verified === values.emailVer ? false : true;
   } else {
@@ -57,7 +57,7 @@ export const updateUser = async (user: UserData, values: z.infer<typeof UserEdit
   }
   const roleChanged = values.role === user.role_name || !values.role ? false : true;
 
-  var roleId;
+  let roleId: string| undefined;
   if (roleChanged) {
     roleId = await getRoleIdByName(values.role);
     if (!roleId) {
@@ -65,15 +65,15 @@ export const updateUser = async (user: UserData, values: z.infer<typeof UserEdit
     }
   } 
 
-  var nameChanged = values.name === "" ? false : true;
+  const nameChanged = values.name === "" ? false : true;
   if (nameChanged) {
     user.name = values.name
   }
-  var emailChanged = values.email === "" || !values.email ? false : true
+  const emailChanged = values.email === "" || !values.email ? false : true
   if (emailChanged) {
     user.email = values.email
   }
-  var emailState;
+  let emailState: Date| null = null;
   if (emailVerChange) {
     if (!user.email_verified) {
       emailState = new Date()
@@ -86,7 +86,6 @@ export const updateUser = async (user: UserData, values: z.infer<typeof UserEdit
   const somethingChanged = emailChanged || nameChanged || emailVerChange || roleChanged;
 
   if(!somethingChanged) return {notice: "Nic se nezměnilo"}
-  console.log("E:" + emailChanged,"N:" + nameChanged,"EV:" + emailVerChange,"R:" + roleChanged)
   if ((!emailVerChange && !roleChanged) && somethingChanged) {
     console.log(user.name,user.email)
     await db.user.update({
