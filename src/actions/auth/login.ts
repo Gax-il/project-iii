@@ -13,6 +13,7 @@ import { DEFAULT_AUTH_REDIRECT } from "@/routes";
 import { getUserByEmail } from "@/data/user";
 import {
 	BAD_CREDENTIALS,
+	BAD_INPUT,
 	EMAIL_IN_USE_OAUTH,
 	EMAIL_NOT_FOUND,
 	EMAIL_NOT_VERIFIED,
@@ -28,7 +29,7 @@ export const login = async (
 	const validatedFields = LoginSchema.safeParse(values);
 
 	if (!validatedFields.success) {
-		return { error: "Invalid fields" };
+		return { error: BAD_INPUT };
 	}
 
 	const { email, password } = validatedFields.data;

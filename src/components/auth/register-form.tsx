@@ -31,11 +31,9 @@ import { EMAIL, NAME, PASSWORD } from "@/assets/placeholders";
 import { register } from "@/actions/auth/register";
 
 export const RegisterForm = () => {
-	const searchParams = useSearchParams();
 	const [error, setError] = useState<string | undefined>("");
 	const [success, setSuccess] = useState<string | undefined>("");
 	const [isPending, startTransition] = useTransition();
-	// const [isPending, setIsPending] = useState(false);
 
 	const form = useForm<z.infer<typeof RegisterSchema>>({
 		resolver: zodResolver(RegisterSchema),

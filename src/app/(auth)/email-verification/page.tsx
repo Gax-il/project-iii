@@ -1,10 +1,8 @@
-import { EmailVerificationForm } from '@/components/auth/email-verification'
-import React from 'react'
+import { EmailVerificationCard } from "@/components/auth/email-verification";
+import React from "react";
 
 const EmailVerificationPage = () => {
-  return (
-    <EmailVerificationForm />
-  )
-}
+	return <EmailVerificationCard />;
+};
 
-export default EmailVerificationPage
+export default EmailVerificationPage;
